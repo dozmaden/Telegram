@@ -10,6 +10,7 @@
 #   ./Tools/build_variants.sh list
 #   ./Tools/build_variants.sh app-release-apk
 #   ./Tools/build_variants.sh app-obfuscated-release-apk
+#   ./Tools/build_variants.sh app-bundle-obfuscated-release-apk
 #   ./Tools/build_variants.sh app-release-aab
 #
 # Notes on ABIs:
@@ -46,8 +47,12 @@ Available targets:
   app-debug-apk
   app-release-apk
   app-obfuscated-release-apk
+  app-bundle-obfuscated-release-apk
+  app-bundle-sdk23-obfuscated-release-apk
   app-release-aab
+  app-obfuscated-release-aab
   app-release-aab-sdk23
+  app-obfuscated-release-aab-sdk23
   standalone-release-apk
   standalone-release-aab
   huawei-release-apk
@@ -59,8 +64,12 @@ Target details:
   app-debug-apk           -> :TMessagesProj_App:assembleAfatDebug
   app-release-apk         -> :TMessagesProj_App:assembleAfatRelease
   app-obfuscated-release-apk -> :TMessagesProj_App:assembleAfatObfuscatedRelease
+  app-bundle-obfuscated-release-apk -> :TMessagesProj_App:assembleBundleAfatObfuscatedRelease
+  app-bundle-sdk23-obfuscated-release-apk -> :TMessagesProj_App:assembleBundleAfat_SDK23ObfuscatedRelease
   app-release-aab         -> :TMessagesProj_App:bundleBundleAfatRelease
+  app-obfuscated-release-aab -> :TMessagesProj_App:bundleBundleAfatObfuscatedRelease
   app-release-aab-sdk23   -> :TMessagesProj_App:bundleBundleAfat_SDK23Release
+  app-obfuscated-release-aab-sdk23 -> :TMessagesProj_App:bundleBundleAfat_SDK23ObfuscatedRelease
   standalone-release-apk  -> :TMessagesProj_AppStandalone:assembleAfatStandalone
   standalone-release-aab  -> :TMessagesProj_AppStandalone:bundleAfatRelease
   huawei-release-apk      -> :TMessagesProj_AppHuawei:assembleAfatRelease
@@ -88,11 +97,23 @@ case "$TASK" in
   app-obfuscated-release-apk)
     run_gradle ":TMessagesProj_App:assembleAfatObfuscatedRelease"
     ;;
+  app-bundle-obfuscated-release-apk)
+    run_gradle ":TMessagesProj_App:assembleBundleAfatObfuscatedRelease"
+    ;;
+  app-bundle-sdk23-obfuscated-release-apk)
+    run_gradle ":TMessagesProj_App:assembleBundleAfat_SDK23ObfuscatedRelease"
+    ;;
   app-release-aab)
     run_gradle ":TMessagesProj_App:bundleBundleAfatRelease"
     ;;
+  app-obfuscated-release-aab)
+    run_gradle ":TMessagesProj_App:bundleBundleAfatObfuscatedRelease"
+    ;;
   app-release-aab-sdk23)
     run_gradle ":TMessagesProj_App:bundleBundleAfat_SDK23Release"
+    ;;
+  app-obfuscated-release-aab-sdk23)
+    run_gradle ":TMessagesProj_App:bundleBundleAfat_SDK23ObfuscatedRelease"
     ;;
   standalone-release-apk)
     run_gradle ":TMessagesProj_AppStandalone:assembleAfatStandalone"
@@ -115,8 +136,12 @@ case "$TASK" in
   all-known-working)
     run_gradle ":TMessagesProj_App:assembleAfatRelease"
     run_gradle ":TMessagesProj_App:assembleAfatObfuscatedRelease"
+    run_gradle ":TMessagesProj_App:assembleBundleAfatObfuscatedRelease"
+    run_gradle ":TMessagesProj_App:assembleBundleAfat_SDK23ObfuscatedRelease"
     run_gradle ":TMessagesProj_App:bundleBundleAfat_SDK23Release"
+    run_gradle ":TMessagesProj_App:bundleBundleAfat_SDK23ObfuscatedRelease"
     run_gradle ":TMessagesProj_App:bundleBundleAfatRelease"
+    run_gradle ":TMessagesProj_App:bundleBundleAfatObfuscatedRelease"
     run_gradle ":TMessagesProj_AppStandalone:assembleAfatStandalone"
     run_gradle ":TMessagesProj_AppHuawei:assembleAfatRelease"
     ;;

@@ -1,15 +1,17 @@
 # Reproducible Release APK Builds
 
-This project keeps the original `afatRelease` build behavior and adds a separate
-`afatObfuscatedRelease` build for real R8 optimization and obfuscation.
-Reproducible verification is intentionally wrapped in one script so verifiers do
-not need to know R8 or APK signing internals.
+This project keeps the original release flavor behavior and adds separate
+obfuscated release flavors for real R8 optimization and obfuscation.
+Reproducible verification is intentionally wrapped in one script so verifiers
+do not need to know R8 or APK signing internals.
 
 The split is deliberate:
 
-- `afatRelease` uses the original `TMessagesProj/proguard-rules.pro`, including
-  its broad keeps plus `-dontoptimize` and `-dontobfuscate`.
-- `afatObfuscatedRelease` uses
+- `afatRelease`, `bundleAfatRelease`, and `bundleAfat_SDK23Release` use the
+  original `TMessagesProj/proguard-rules.pro`, including its broad keeps plus
+  `-dontoptimize` and `-dontobfuscate`.
+- `afatObfuscatedRelease`, `bundleAfatObfuscatedRelease`, and
+  `bundleAfat_SDK23ObfuscatedRelease` use
   `TMessagesProj/proguard-rules-obfuscated.pro`, which removes those global
   blockers and replaces broad keeps with narrower JNI, reflection, WebView,
   Parcelable, ML Kit, Huawei/GMS, ExoPlayer, and WebRTC rules.
@@ -466,8 +468,8 @@ the second build is an apply-mapping R8 build.
 
 ## Script Reproducibility Model
 
-The reproducible script always performs three clean builds of
-`afatObfuscatedRelease`:
+The reproducible script performs three clean APK builds of the selected
+obfuscated release variant:
 
 1. Seed build, without `-applymapping`.
    - The seed APK is saved for inspection.
@@ -483,19 +485,27 @@ SHA-256 hashes. The reproducibility proof is the equality of apply-mapping build
 1 and apply-mapping build 2. The seed APK is expected to differ because it was
 compiled in R8's no-mapping mode.
 
+Supported variants are:
+
+- `afatObfuscatedRelease`
+- `bundleAfatObfuscatedRelease`
+- `bundleAfat_SDK23ObfuscatedRelease`
+
 ## Build And Verify
 
 ```bash
-Tools/build_TMessagesProj_App_assembleAfatObfuscatedRelease_reproducible.sh
+Tools/build_TMessagesProj_App_obfuscated_reproducible.sh afatObfuscatedRelease
+Tools/build_TMessagesProj_App_obfuscated_reproducible.sh bundleAfatObfuscatedRelease
+Tools/build_TMessagesProj_App_obfuscated_reproducible.sh bundleAfat_SDK23ObfuscatedRelease
 ```
 
 The script exports:
 
-- `build_exports/TMessagesProj_App_assembleAfatObfuscatedRelease_reproducible_<timestamp>/outputs/apk/seed-no-applymapping/app.apk`
-- `build_exports/TMessagesProj_App_assembleAfatObfuscatedRelease_reproducible_<timestamp>/outputs/mapping/seed-no-applymapping/mapping.txt`
-- `build_exports/TMessagesProj_App_assembleAfatObfuscatedRelease_reproducible_<timestamp>/outputs/apk/applymapping-1/app.apk`
-- `build_exports/TMessagesProj_App_assembleAfatObfuscatedRelease_reproducible_<timestamp>/outputs/apk/applymapping-2/app.apk`
-- `build_exports/TMessagesProj_App_assembleAfatObfuscatedRelease_reproducible_<timestamp>/outputs/REPRODUCIBILITY_RESULT.txt`
+- `build_exports/TMessagesProj_App_<variant>_reproducible_<timestamp>/outputs/apk/seed-no-applymapping/app.apk`
+- `build_exports/TMessagesProj_App_<variant>_reproducible_<timestamp>/outputs/mapping/seed-no-applymapping/mapping.txt`
+- `build_exports/TMessagesProj_App_<variant>_reproducible_<timestamp>/outputs/apk/applymapping-1/app.apk`
+- `build_exports/TMessagesProj_App_<variant>_reproducible_<timestamp>/outputs/apk/applymapping-2/app.apk`
+- `build_exports/TMessagesProj_App_<variant>_reproducible_<timestamp>/outputs/REPRODUCIBILITY_RESULT.txt`
 
 `REPRODUCIBILITY_RESULT.txt` records the task, seed mapping path, seed APK hash,
 both apply-mapping APK hashes, and the final `MATCH` or `MISMATCH` result. The
@@ -503,7 +513,7 @@ script exits non-zero if the two apply-mapping APK hashes differ.
 
 Do not pass `ANDROID_ABI` or `-Pandroid.injected.build.abi` to this script. The
 ABI list belongs in `TMessagesProj_App/build.gradle`; the current
-`afatObfuscated` flavor keeps only the configured 64-bit ABIs.
+obfuscated flavors keep only the configured 64-bit ABIs.
 
 ## Why The Seed APK Is Not The Target
 
@@ -567,7 +577,7 @@ For F-Droid-style verification of this project:
 
 1. Publish `app.apk`, `mapping.txt`, source tag, and build environment details.
 2. A verifier runs
-   `Tools/build_TMessagesProj_App_assembleAfatObfuscatedRelease_reproducible.sh`
+   `Tools/build_TMessagesProj_App_obfuscated_reproducible.sh <variant>`
    from the same source tree and toolchain.
 3. The verifier compares the two deterministically signed apply-mapping APK
    SHA-256 hashes, or uses signature-copying tooling to compare against a
