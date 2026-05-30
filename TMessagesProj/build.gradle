@@ -103,6 +103,12 @@ android {
         minSdkVersion 21
         targetSdkVersion 35
 
+        ndk {
+            // 64-bit only for now. Uncomment the next line and comment the current line to restore all ABIs.
+            // abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+            abiFilters "arm64-v8a", "x86_64"
+        }
+
         vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
 
         multiDexEnabled true
