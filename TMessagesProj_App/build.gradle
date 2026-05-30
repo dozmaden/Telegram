@@ -282,6 +282,14 @@ android {
     }
 }
 
+androidComponents {
+    beforeVariants(selector().all()) { variantBuilder ->
+        if (variantBuilder.buildType == "release" && variantBuilder.flavorName.endsWith("Obfuscated")) {
+            variantBuilder.shrinkResources = true
+        }
+    }
+}
+
 if (generateR8ApplyMappingRulesTask != null) {
     tasks.configureEach { task ->
         if (task.name.startsWith("minify") && task.name.endsWith("ReleaseWithR8")) {
