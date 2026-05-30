@@ -20,6 +20,26 @@ dependencies {
     implementation files('../TMessagesProj/libs/libgsaverification-client.aar')
 }
 
+def r8ApplyMappingFile = null
+def r8ApplyMappingRulesFile = null
+def generateR8ApplyMappingRulesTask = null
+def r8ApplyMappingPath = findProperty("R8ApplyMapping") ?: findProperty("r8ApplyMapping")
+if (r8ApplyMappingPath != null && r8ApplyMappingPath.toString().trim().length() > 0) {
+    r8ApplyMappingFile = file(r8ApplyMappingPath.toString())
+    if (!r8ApplyMappingFile.isFile()) {
+        throw new GradleException("r8ApplyMapping does not point to a file: ${r8ApplyMappingFile.absolutePath}")
+    }
+    r8ApplyMappingRulesFile = layout.buildDirectory.file("generated/proguard/r8-applymapping.pro").get().asFile
+    generateR8ApplyMappingRulesTask = tasks.register("generateR8ApplyMappingRules") {
+        inputs.file(r8ApplyMappingFile)
+        outputs.file(r8ApplyMappingRulesFile)
+        doLast {
+            r8ApplyMappingRulesFile.parentFile.mkdirs()
+            r8ApplyMappingRulesFile.text = "-applymapping ${r8ApplyMappingFile.absolutePath}\n"
+        }
+    }
+}
+
 android {
     compileSdkVersion 35
     buildToolsVersion '35.0.0'
@@ -89,7 +109,10 @@ android {
             minifyEnabled true
             shrinkResources false
             multiDexEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            if (r8ApplyMappingRulesFile != null) {
+                proguardFiles r8ApplyMappingRulesFile
+            }
             ndk.debugSymbolLevel = 'FULL'
         }
     }
@@ -111,7 +134,7 @@ android {
     productFlavors {
         bundleAfat {
             ndk {
-                // AI_EDIT: 64-bit only. Uncomment the next line and comment the current line to restore all ABIs.
+                // 64-bit only for now. Uncomment the next line and comment the current line to restore all ABIs.
                 // abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
                 abiFilters "arm64-v8a", "x86_64"
             }
@@ -119,10 +142,11 @@ android {
                 abiVersionCode = 1
             }
             buildConfigField "boolean", "BUNDLE", "true"
+            proguardFiles '../TMessagesProj/proguard-rules.pro'
         }
         bundleAfat_SDK23 {
             ndk {
-                // AI_EDIT: 64-bit only. Uncomment the next line and comment the current line to restore all ABIs.
+                // 64-bit only for now. Uncomment the next line and comment the current line to restore all ABIs.
                 // abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
                 abiFilters "arm64-v8a", "x86_64"
             }
@@ -137,10 +161,11 @@ android {
                 abiVersionCode = 2
             }
             buildConfigField "boolean", "BUNDLE", "true"
+            proguardFiles '../TMessagesProj/proguard-rules.pro'
         }
         afat {
             ndk {
-                // AI_EDIT: 64-bit only. Uncomment the next line and comment the current line to restore all ABIs.
+                // 64-bit only for now. Uncomment the next line and comment the current line to restore all ABIs.
                 // abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
                 abiFilters "arm64-v8a", "x86_64"
             }
@@ -157,6 +182,28 @@ android {
                 abiVersionCode = 9
             }
             buildConfigField "boolean", "BUNDLE", "false"
+            proguardFiles '../TMessagesProj/proguard-rules.pro'
+        }
+        afatObfuscated {
+            ndk {
+                // 64-bit only for now. Uncomment the next line and comment the current line to restore all ABIs.
+                // abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                abiFilters "arm64-v8a", "x86_64"
+            }
+            sourceSets.debug {
+                manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest_SDK23.xml'
+            }
+            sourceSets.release {
+                manifest.srcFile '../TMessagesProj/config/release/AndroidManifest_SDK23.xml'
+            }
+            sourceSets.standalone {
+                manifest.srcFile '../TMessagesProj/config/release/AndroidManifest_standalone.xml'
+            }
+            ext {
+                abiVersionCode = 9
+            }
+            buildConfigField "boolean", "BUNDLE", "false"
+            proguardFiles '../TMessagesProj/proguard-rules-obfuscated.pro'
         }
     }
 
@@ -201,6 +248,14 @@ android {
 
     lintOptions {
         checkReleaseBuilds false
+    }
+}
+
+if (generateR8ApplyMappingRulesTask != null) {
+    tasks.configureEach { task ->
+        if (task.name.startsWith("minify") && task.name.endsWith("ReleaseWithR8")) {
+            task.dependsOn(generateR8ApplyMappingRulesTask)
+        }
     }
 }
 
