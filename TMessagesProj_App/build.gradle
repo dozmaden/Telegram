@@ -111,7 +111,9 @@ android {
     productFlavors {
         bundleAfat {
             ndk {
-                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                // AI_EDIT: 64-bit only. Uncomment the next line and comment the current line to restore all ABIs.
+                // abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                abiFilters "arm64-v8a", "x86_64"
             }
             ext {
                 abiVersionCode = 1
@@ -120,7 +122,9 @@ android {
         }
         bundleAfat_SDK23 {
             ndk {
-                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                // AI_EDIT: 64-bit only. Uncomment the next line and comment the current line to restore all ABIs.
+                // abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                abiFilters "arm64-v8a", "x86_64"
             }
             sourceSets.debug {
                 manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest_SDK23.xml'
@@ -136,7 +140,9 @@ android {
         }
         afat {
             ndk {
-                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                // AI_EDIT: 64-bit only. Uncomment the next line and comment the current line to restore all ABIs.
+                // abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                abiFilters "arm64-v8a", "x86_64"
             }
             sourceSets.debug {
                 manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest_SDK23.xml'
@@ -174,7 +180,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 35
         versionName APP_VERSION_NAME
-        ndkVersion "21.4.7075529"
+        ndkVersion "24.0.8215888"
 
         multiDexEnabled true
 

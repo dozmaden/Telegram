@@ -263,20 +263,20 @@ target_include_directories(rlottie PUBLIC
         rlottie/src/vector/freetype
         rlottie/src/vector/stb)
 
+# Compile rlottie NEON helper only when pixman NEON asm is enabled.
 if (${ANDROID_ABI} STREQUAL "armeabi-v7a")
-    target_compile_options(rlottie PUBLIC
-            -fno-integrated-as)
     target_compile_definitions(rlottie PUBLIC
             USE_ARM_NEON)
-    target_sources(rlottie PRIVATE
-            rlottie/src/vector/pixman/pixman-arm-neon-asm.S)
+    # NDK r24+ on macOS does not provide GNU Android cross-assemblers, so
+    # assembling pixman ARM .S with -fno-integrated-as fails on /usr/bin/as.
+    # Keep NEON enabled and use the C++ fallback wrappers in vdrawhelper_neon.
 elseif(${ANDROID_ABI} STREQUAL "arm64-v8a")
-    target_compile_options(rlottie PUBLIC
-            -fno-integrated-as)
     target_compile_definitions(rlottie PUBLIC
             USE_ARM_NEON __ARM64_NEON__)
-    target_sources(rlottie PRIVATE
-            rlottie/src/vector/pixman/pixman-arma64-neon-asm.S)
+    # NDK r24+ on macOS no longer ships GNU cross-assembler binaries.
+    # The pixman AArch64 .S file requires GNU as semantics and fails with
+    # clang integrated assembler, so keep arm64 NEON enabled via C++ code
+    # and skip this optional asm translation unit for portability.
 endif()
 
 
