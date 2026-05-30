@@ -18,12 +18,12 @@ set -euo pipefail
 # Usage:
 #   ./Tools/rebuild_ffmpeg_android.sh
 #   ./Tools/rebuild_ffmpeg_android.sh --abis arm64-v8a
-#   ANDROID_NDK_ROOT=~/Library/Android/sdk/ndk/24.0.8215888 ./Tools/rebuild_ffmpeg_android.sh
+#   ANDROID_NDK_ROOT=~/Library/Android/sdk/ndk/27.2.12479018 ./Tools/rebuild_ffmpeg_android.sh
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 FFMPEG_LIB_DIR="$ROOT_DIR/TMessagesProj/jni/ffmpeg"
 
-NDK_DEFAULT="$HOME/Library/Android/sdk/ndk/24.0.8215888"
+NDK_DEFAULT="$HOME/Library/Android/sdk/ndk/27.2.12479018"
 NDK_ROOT="${ANDROID_NDK_ROOT:-${ANDROID_NDK_HOME:-$NDK_DEFAULT}}"
 TOOLCHAIN="$NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64"
 
