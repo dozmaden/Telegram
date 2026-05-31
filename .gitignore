@@ -4,6 +4,8 @@ build/
 obj/
 *.iml
 local.properties
+**/google-services.json
+TMessagesProj/config/release.keystore
 TMessagesProj/.cxx/
 TMessagesProj/jniLibs/
 TMessagesProj/jniRes/

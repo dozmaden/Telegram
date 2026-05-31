@@ -546,7 +546,7 @@ The reproducible script therefore re-signs the final APK deterministically with:
 - v2 signing enabled
 - v3/v4 signing disabled
 - `--min-sdk-version 17`
-- the same release keystore, alias, and passwords from `gradle.properties`
+- the same release keystore, alias, and passwords from `local.properties`
 
 This keeps a valid v1+v2 signed APK while making the signed APK bytes stable.
 

@@ -17,3 +17,15 @@ buildscript {
 repositories {
     google()
 }
+
+ext.localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream {
+        localProperties.load(it)
+    }
+}
+
+ext.getLocalProperty = { String key ->
+    return localProperties.getProperty(key, "")
+}

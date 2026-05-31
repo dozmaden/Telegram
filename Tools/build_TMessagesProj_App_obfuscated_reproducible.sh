@@ -83,11 +83,12 @@ require_file() {
 
 read_property() {
   local key="$1"
-  awk -F= -v key="$key" '$1 == key { print substr($0, length(key) + 2); exit }' "$ROOT_DIR/gradle.properties"
+  awk -F= -v key="$key" '$1 == key { print substr($0, length(key) + 2); exit }' "$ROOT_DIR/local.properties"
 }
 
 require_file "$GRADLEW"
 require_file "$APKSIGNER"
+require_file "$ROOT_DIR/local.properties"
 require_file "$ROOT_DIR/TMessagesProj/config/release.keystore"
 
 KEYSTORE="$ROOT_DIR/TMessagesProj/config/release.keystore"
