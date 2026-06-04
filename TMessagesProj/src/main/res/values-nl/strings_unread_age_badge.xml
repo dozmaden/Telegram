@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="UnreadAgeBadge">Leeftijdsbadge voor ongelezen</string>
+    <string name="UnreadAgeBadgeInfo">Kleurt de ongelezen-badge op basis van hoelang een chat ongelezen berichten heeft, van blauw naar rood naarmate de tijd verstrijkt. Chats die je als ongelezen markeert tonen de verstreken tijd in plaats van een stip</string>
+    <string name="UnreadAgeBadgeDays_one">%dd</string>
+    <string name="UnreadAgeBadgeDays_other">%dd</string>
+    <string name="UnreadAgeBadgeWeeks_one">%dw</string>
+    <string name="UnreadAgeBadgeWeeks_other">%dw</string>
+</resources>

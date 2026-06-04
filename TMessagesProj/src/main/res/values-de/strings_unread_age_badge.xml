@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="UnreadAgeBadge">Alter ungelesener Chats</string>
+    <string name="UnreadAgeBadgeInfo">Färbt das Ungelesen-Abzeichen danach, wie lange ein Chat ungelesene Nachrichten hat – von Blau bis Rot mit der Zeit. Als ungelesen markierte Chats zeigen die verstrichene Zeit statt eines Punkts</string>
+    <string name="UnreadAgeBadgeDays_one">%dT</string>
+    <string name="UnreadAgeBadgeDays_other">%dT</string>
+    <string name="UnreadAgeBadgeWeeks_one">%dW</string>
+    <string name="UnreadAgeBadgeWeeks_other">%dW</string>
+</resources>

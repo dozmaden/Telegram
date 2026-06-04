@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="UnreadAgeBadge">شارة مدة عدم القراءة</string>
+    <string name="UnreadAgeBadgeInfo">لوّن شارة غير المقروء حسب المدة التي ظلت فيها المحادثة تحتوي رسائل غير مقروءة، من الأزرق إلى الأحمر مع مرور الوقت. تعرض المحادثات المحددة كغير مقروءة الوقت المنقضي بدلاً من نقطة</string>
+    <string name="UnreadAgeBadgeDays_one">%dي</string>
+    <string name="UnreadAgeBadgeDays_other">%dي</string>
+    <string name="UnreadAgeBadgeWeeks_one">%dأ</string>
+    <string name="UnreadAgeBadgeWeeks_other">%dأ</string>
+</resources>

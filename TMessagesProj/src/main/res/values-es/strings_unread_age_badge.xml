@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="UnreadAgeBadge">Insignia de antigüedad de no leído</string>
+    <string name="UnreadAgeBadgeInfo">Colorea la insignia de no leído según cuánto tiempo lleva un chat con mensajes sin leer, de azul a rojo a medida que pasa el tiempo. Los chats marcados como no leídos muestran el tiempo transcurrido en lugar de un punto</string>
+    <string name="UnreadAgeBadgeDays_one">%dd</string>
+    <string name="UnreadAgeBadgeDays_other">%dd</string>
+    <string name="UnreadAgeBadgeWeeks_one">%dsem</string>
+    <string name="UnreadAgeBadgeWeeks_other">%dsem</string>
+</resources>

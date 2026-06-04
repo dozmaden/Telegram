@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="UnreadAgeBadge">Бейдж давності непрочитаного</string>
+    <string name="UnreadAgeBadgeInfo">Забарвлює бейдж непрочитаного залежно від того, як довго в чаті є непрочитані повідомлення — від синього до червоного з часом. Чати, позначені як непрочитані, показують час замість крапки</string>
+    <string name="UnreadAgeBadgeDays_one">%dд</string>
+    <string name="UnreadAgeBadgeDays_other">%dд</string>
+    <string name="UnreadAgeBadgeWeeks_one">%dт</string>
+    <string name="UnreadAgeBadgeWeeks_other">%dт</string>
+</resources>

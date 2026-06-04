@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Strings for the "Unread age badge" feature, kept in a dedicated file (not strings.xml) so they
+  never conflict with upstream changes. Keys are feature-prefixed to avoid collisions. Minute/hour
+  labels reuse upstream's ShortMinutesAgo / ShortHoursAgo. See features/unread-age-badge.md.
+-->
+<resources>
+    <string name="UnreadAgeBadge">Unread age badge</string>
+    <string name="UnreadAgeBadgeInfo">Colour the unread badge by how long a chat has had unread messages, from blue to red as time passes. Chats you mark as unread show the elapsed time instead of a dot</string>
+    <string name="UnreadAgeBadgeDays_one">%dd</string>
+    <string name="UnreadAgeBadgeDays_other">%dd</string>
+    <string name="UnreadAgeBadgeWeeks_one">%dw</string>
+    <string name="UnreadAgeBadgeWeeks_other">%dw</string>
+</resources>

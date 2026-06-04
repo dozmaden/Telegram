@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="UnreadAgeBadge">Badge durata da non letto</string>
+    <string name="UnreadAgeBadgeInfo">Colora il badge di non letto in base a da quanto tempo una chat ha messaggi non letti, dal blu al rosso col passare del tempo. Le chat segnate come da leggere mostrano il tempo trascorso invece del puntino</string>
+    <string name="UnreadAgeBadgeDays_one">%dg</string>
+    <string name="UnreadAgeBadgeDays_other">%dg</string>
+    <string name="UnreadAgeBadgeWeeks_one">%dsett</string>
+    <string name="UnreadAgeBadgeWeeks_other">%dsett</string>
+</resources>

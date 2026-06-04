@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="UnreadAgeBadge">읽지 않음 경과 배지</string>
+    <string name="UnreadAgeBadgeInfo">채팅에 읽지 않은 메시지가 있은 시간에 따라 읽지 않음 배지 색을 파란색에서 빨간색으로 표시합니다. 읽지 않음으로 표시한 채팅은 점 대신 경과 시간을 보여줍니다</string>
+    <string name="UnreadAgeBadgeDays_one">%d일</string>
+    <string name="UnreadAgeBadgeDays_other">%d일</string>
+    <string name="UnreadAgeBadgeWeeks_one">%d주</string>
+    <string name="UnreadAgeBadgeWeeks_other">%d주</string>
+</resources>

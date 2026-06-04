@@ -81,6 +81,8 @@ import org.telegram.messenger.MessagesStorage;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
+import org.telegram.messenger.UnreadMarkBadge;
+import org.telegram.messenger.UnreadMarkTimeTracker;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
@@ -175,6 +177,8 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
     private boolean nameIsEllipsized;
     private Paint topicCounterPaint;
     private Paint counterPaintOutline;
+    private Paint unreadMarkAgePaint;
+    private long unreadMarkAgeBadgeTime;
     public float chekBoxPaddingTop = 42;
     private boolean needEmoji;
     private boolean hasNameInMessage;
@@ -2001,15 +2005,35 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                     drawReactionMention = false;
                     drawPollVotesMention = false;
                 } else {
+                    final boolean unread = unreadCount != 0 || markUnread;
+                    final UnreadMarkTimeTracker unreadMarkTracker = UnreadMarkTimeTracker.getInstance(currentAccount);
+                    // For chats with unread messages, age from the (first) unread message's time; the
+                    // dialog's top message equals the first unread one at the moment it turns unread.
+                    long unreadSinceCandidate = 0;
+                    if (unreadCount != 0 && message != null && message.messageOwner != null) {
+                        unreadSinceCandidate = message.messageOwner.date * 1000L;
+                    }
+                    unreadMarkTracker.track(currentDialogId, unread, unreadSinceCandidate);
+                    unreadMarkAgeBadgeTime = 0;
                     if (clearingDialog) {
                         drawCount = false;
                         showChecks = false;
                     } else if (unreadCount != 0) {
                         drawCount = true;
                         countString = String.format("%d", unreadCount);
+                        if (SharedConfig.unreadMarkAgeBadge) {
+                            // Keep the unread count as the text; encode age in the badge colour.
+                            unreadMarkAgeBadgeTime = unreadMarkTracker.getUnreadSinceTime(currentDialogId);
+                        }
                     } else if (markUnread) {
                         drawCount = true;
-                        countString = "";
+                        long unreadSince = SharedConfig.unreadMarkAgeBadge ? unreadMarkTracker.getUnreadSinceTime(currentDialogId) : 0;
+                        if (unreadSince != 0) {
+                            unreadMarkAgeBadgeTime = unreadSince;
+                            countString = UnreadMarkBadge.formatShort(unreadSince);
+                        } else {
+                            countString = "";
+                        }
                     } else {
                         drawCount = false;
                     }
@@ -5061,6 +5085,15 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 restoreCountTextPaint = true;
             } else {
                 paint = drawCounterMuted || currentDialogFolderId != 0 ? Theme.dialogs_countGrayPaint : Theme.dialogs_countPaint;
+                // Age-colour the unread badge (blue->yellow->red). Muted chats keep their gray
+                // counter; folders keep the default treatment.
+                if (unreadMarkAgeBadgeTime != 0 && !drawCounterMuted && currentDialogFolderId == 0) {
+                    if (unreadMarkAgePaint == null) {
+                        unreadMarkAgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                    }
+                    unreadMarkAgePaint.setColor(UnreadMarkBadge.getColor(unreadMarkAgeBadgeTime));
+                    paint = unreadMarkAgePaint;
+                }
             }
 
             if (countOldLayout == null || unreadCount == 0) {

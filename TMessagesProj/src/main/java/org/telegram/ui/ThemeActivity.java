@@ -152,6 +152,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
     private int textSizeRow;
     private int settingsRow;
     private int directShareRow;
+    private int unreadMarkAgeBadgeRow;
     @Keep
     private int sensitiveContentRow;
     private int raiseToSpeakRow;
@@ -583,6 +584,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
         changeUserColor = -1;
         settingsRow = -1;
         directShareRow = -1;
+        unreadMarkAgeBadgeRow = -1;
         sensitiveContentRow = -1;
         enableAnimationsRow = -1;
         raiseToSpeakRow = -1;
@@ -698,6 +700,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
 
             otherHeaderRow = rowCount++;
             directShareRow = rowCount++;
+            unreadMarkAgeBadgeRow = rowCount++;
             TL_account.contentSettings contentSettings = getMessagesController().getContentSettings();
             if (contentSettings != null && contentSettings.sensitive_can_change) {
                 sensitiveContentRow = rowCount++;
@@ -1125,6 +1128,12 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
                 if (view instanceof TextCheckCell) {
                     ((TextCheckCell) view).setChecked(SharedConfig.raiseToSpeak);
                 }
+            } else if (position == unreadMarkAgeBadgeRow) {
+                SharedConfig.toggleUnreadMarkAgeBadge();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(SharedConfig.unreadMarkAgeBadge);
+                }
+                getNotificationCenter().postNotificationName(NotificationCenter.dialogsNeedReload);
             } else if (position == nextMediaTapRow) {
                 SharedConfig.toggleNextMediaTap();
                 if (view instanceof TextCheckCell) {
@@ -2609,6 +2618,8 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
                         textCheckCell.setTextAndCheck(getString(R.string.PauseMusicOnMedia), SharedConfig.pauseMusicOnMedia, true);
                     } else if (position == directShareRow) {
                         textCheckCell.setTextAndValueAndCheck(getString("DirectShare", R.string.DirectShare), getString("DirectShareInfo", R.string.DirectShareInfo), SharedConfig.directShare, false, true);
+                    } else if (position == unreadMarkAgeBadgeRow) {
+                        textCheckCell.setTextAndValueAndCheck(getString(R.string.UnreadAgeBadge), getString(R.string.UnreadAgeBadgeInfo), SharedConfig.unreadMarkAgeBadge, true, true);
                     } else if (position == sensitiveContentRow) {
                         textCheckCell.setTextAndValueAndCheck(getString(R.string.ShowSensitiveContent), getString(R.string.ShowSensitiveContentInfo), getMessagesController().showSensitiveContent(), true, true);
                     } else if (position == chatBlurRow) {
@@ -2746,7 +2757,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
                 return TYPE_BRIGHTNESS;
             } else if (position == scheduleLocationRow || position == sendByEnterRow ||
                     position == raiseToSpeakRow || position == raiseToListenRow || position == pauseOnRecordRow ||
-                    position == directShareRow || position == chatBlurRow || position == pauseOnMediaRow || position == nextMediaTapRow || position == sensitiveContentRow) {
+                    position == directShareRow || position == unreadMarkAgeBadgeRow || position == chatBlurRow || position == pauseOnMediaRow || position == nextMediaTapRow || position == sensitiveContentRow) {
                 return TYPE_TEXT_CHECK;
             } else if (position == textSizeRow) {
                 return TYPE_TEXT_SIZE;

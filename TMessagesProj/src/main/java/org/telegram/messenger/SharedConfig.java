@@ -283,6 +283,7 @@ public class SharedConfig {
     public static boolean chatBubbles = Build.VERSION.SDK_INT >= 30;
     public static boolean raiseToSpeak = false;
     public static boolean raiseToListen = true;
+    public static boolean unreadMarkAgeBadge = true;
     public static boolean nextMediaTap = true;
     public static boolean recordViaSco = false;
     public static boolean customTabs = true;
@@ -592,6 +593,7 @@ public class SharedConfig {
             searchEngineType = preferences.getInt("searchEngineType", 0);
             raiseToListen = preferences.getBoolean("raise_to_listen", true);
             raiseToSpeak = preferences.getBoolean("raise_to_speak", false);
+            unreadMarkAgeBadge = preferences.getBoolean("unreadMarkAgeBadge", true);
             nextMediaTap = preferences.getBoolean("next_media_on_tap", true);
             recordViaSco = preferences.getBoolean("record_via_sco", false);
             customTabs = preferences.getBoolean("custom_tabs", true);
@@ -1253,6 +1255,14 @@ public class SharedConfig {
         SharedPreferences preferences = MessagesController.getGlobalMainSettings();
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("raise_to_speak", raiseToSpeak);
+        editor.apply();
+    }
+
+    public static void toggleUnreadMarkAgeBadge() {
+        unreadMarkAgeBadge = !unreadMarkAgeBadge;
+        SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("unreadMarkAgeBadge", unreadMarkAgeBadge);
         editor.apply();
     }
 
